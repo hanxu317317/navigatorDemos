@@ -5,6 +5,8 @@ import 'examples/Router/lili.dart';
 import 'examples/Router/maybePop.dart';
 import 'examples/Router/pushReplacementNamed.dart';
 import 'examples/Router/pushAndRemoveUntil.dart';
+import 'examples/Canvas/canvas.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() => runApp(MyApp());
 
@@ -20,6 +22,7 @@ class MyApp extends StatelessWidget {
       home: MyHomePage(title: 'Flutter Demo Home Page'),
       routes: <String, WidgetBuilder> {
         '/xiaoming': (_) => new XiaoMingPage(),
+        '/canvas': (_) => new CanvasDemo(),
         '/lili': (_) => new LiLiPage(),
         '/maybePopText': (_) => new MayBePopPage(),
         '/pushReplacementPage' : (_) => new PushReplacementPage(),
@@ -60,6 +63,16 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
     });
+  }
+
+  _launchURL() async {
+    const url = 'tel://18640445983';
+    print("_launchURL");
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   @override
@@ -133,6 +146,17 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.pushNamed(context, '/pushAndRemoveUntilPage');
               },
               child: Text("测试pushAndRemoveUntil"),
+            ),
+            Text("Canvas"),
+            RaisedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/canvas');
+              },
+              child: Text("canvas"),
+            ),
+            RaisedButton(
+              onPressed: _launchURL,
+              child: Text("拨打电话"),
             ),
           ],
         ),
